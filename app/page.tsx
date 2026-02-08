@@ -1,7 +1,12 @@
 "use client"
 
-import React from "react"
+/**
+ * @fileoverview Main dashboard page for RBC Quality Control.
+ * Implements role-based views for Production Operator, Quality Inspector, and Plant Manager.
+ * @module app/page
+ */
 
+import React from "react"
 import { useState, useCallback } from "react"
 import { RoleSwitcher } from "@/components/dashboard/role-switcher"
 import { LotContext } from "@/components/dashboard/lot-context"
@@ -12,6 +17,7 @@ import { SCANNED_LOT, INITIAL_SPECS, type Role, type InspectionSpec } from "@/li
 import { Badge } from "@/components/ui/badge"
 import { HardHat, ClipboardCheck, BarChart3 } from "lucide-react"
 
+/** Role configuration with labels, icons, and descriptions */
 const roleConfig: Record<Role, { label: string; icon: React.ElementType; description: string }> = {
   operator: {
     label: "Production Operator",
@@ -30,6 +36,12 @@ const roleConfig: Record<Role, { label: string; icon: React.ElementType; descrip
   },
 }
 
+/**
+ * Main dashboard page component.
+ * Manages role switching and displays role-specific views.
+ * Implements RBAC by passing isReadOnly to InspectorView for non-inspectors
+ * and only rendering ManagerView for managers.
+ */
 export default function Page() {
   const [role, setRole] = useState<Role>("operator")
   const [finishQty, setFinishQty] = useState(3280)
@@ -39,6 +51,11 @@ export default function Page() {
   const [lotReleased, setLotReleased] = useState(false)
   const [lotRejected, setLotRejected] = useState(false)
 
+  /**
+   * Updates an inspection spec with a new actual value and recalculates status
+   * @param {number} id - The spec ID to update
+   * @param {number | null} actual - The new actual value
+   */
   const handleUpdateSpec = useCallback((id: number, actual: number | null) => {
     setInspectionSpecs((prev) =>
       prev.map((spec) => {
@@ -52,6 +69,9 @@ export default function Page() {
 
   const config = roleConfig[role]
   const Icon = config.icon
+
+  // RBAC: Determine if inspection inputs should be read-only
+  const isInspectionReadOnly = role !== "inspector"
 
   return (
     <div className="min-h-screen bg-background">
@@ -74,14 +94,14 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Lot Context (visible to all roles) */}
+        {/* Lot Context (visible to operators and inspectors, not managers) */}
         {role !== "manager" && (
           <div className="mb-6">
             <LotContext lot={SCANNED_LOT} />
           </div>
         )}
 
-        {/* Role-Specific Views */}
+        {/* Role-Specific Views with RBAC Enforcement */}
         {role === "operator" && (
           <OperatorView
             finishQty={finishQty}
@@ -105,9 +125,11 @@ export default function Page() {
             setLotReleased={setLotReleased}
             lotRejected={lotRejected}
             setLotRejected={setLotRejected}
+            isReadOnly={isInspectionReadOnly}
           />
         )}
 
+        {/* RBAC: Manager View only rendered when role === 'manager' */}
         {role === "manager" && <ManagerView />}
 
         {/* Footer */}
@@ -120,3 +142,4 @@ export default function Page() {
     </div>
   )
 }
+
