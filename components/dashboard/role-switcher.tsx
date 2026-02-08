@@ -129,10 +129,10 @@ export function RoleSwitcher({ currentRole, onRoleChange }: RoleSwitcherProps) {
           <div className="hidden lg:flex items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-2">
             <Clock className="h-4 w-4 text-muted-foreground" />
             <div className="flex flex-col">
-              <span className="text-xs font-mono font-semibold text-foreground">
+              <span suppressHydrationWarning className="text-xs font-mono font-semibold text-foreground">
                 {formatTime(currentTime)}
               </span>
-              <span className="text-[10px] text-muted-foreground">
+              <span suppressHydrationWarning className="text-[10px] text-muted-foreground">
                 {formatDate(currentTime)}
               </span>
             </div>
