@@ -8,6 +8,7 @@ import {
   ShieldCheck,
   ShieldX,
   Eye,
+  FileDown,
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -33,6 +34,7 @@ import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 import type { InspectionSpec } from "@/lib/data"
 import { useState } from "react"
+import { generateCertificatePDF, DEMO_CERTIFICATE_DATA } from "@/lib/pdf/CertificatePDFGenerator"
 
 interface InspectorViewProps {
   finishQty: number
@@ -88,11 +90,22 @@ export function InspectorView({
       setConfirmDialog(null)
       return
     }
+
+    // Generate Certificate of Conformance PDF
+    try {
+      generateCertificatePDF(DEMO_CERTIFICATE_DATA)
+      toast.success("Lot #296039 APPROVED for release", {
+        description: "Certificate of Conformance generated and downloaded.",
+        icon: <FileDown className="h-4 w-4" />,
+      })
+    } catch (error) {
+      toast.error("Error generating certificate", {
+        description: "Please try again or contact support.",
+      })
+    }
+
     setLotReleased(true)
     setConfirmDialog(null)
-    toast.success("Lot #296039 APPROVED for release", {
-      description: "Quality release recorded. Lot cleared for shipment.",
-    })
   }
 
   function handleReject() {
