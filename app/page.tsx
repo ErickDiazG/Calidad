@@ -123,7 +123,7 @@ function DashboardContent() {
   const isInspectionReadOnly = currentRole !== "inspector"
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col bg-background">
       <RoleSwitcher
         currentRole={currentRole}
         currentUser={currentUser?.name || null}
@@ -133,7 +133,7 @@ function DashboardContent() {
         hasScannedLot={!isKioskMode}
       />
 
-      <main className="mx-auto max-w-7xl px-4 py-6 md:px-6">
+      <main className="flex-grow mx-auto w-full max-w-7xl px-4 py-6 md:px-6">
         {/* Kiosk Mode: Show search bar and skeletons */}
         {isKioskMode ? (
           <KioskView />
@@ -194,14 +194,24 @@ function DashboardContent() {
             {currentRole === "manager" && <ManagerView />}
           </div>
         )}
-
-        {/* Footer */}
-        <footer className="mt-8 border-t border-border pb-6 pt-4 text-center">
-          <p className="text-xs text-muted-foreground">
-            RBC Quality Control v2.0 &mdash; One-Scan Kiosk Workflow
-          </p>
-        </footer>
       </main>
+
+      {/* Static Branded Footer - at end of document flow */}
+      <footer className="border-t border-border bg-card py-4 px-4 md:px-6 mt-auto">
+        <div className="mx-auto max-w-7xl flex items-center justify-between">
+          <p className="text-xs text-gray-600 dark:text-gray-400">
+            RBC Quality Control v2.0
+          </p>
+          <a
+            href="https://devdiazlabs.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-zinc-500 hover:text-cyan-500 hover:underline underline-offset-2 transition-colors duration-200"
+          >
+            Developed by DevDiaz Labs
+          </a>
+        </div>
+      </footer>
     </div>
   )
 }
