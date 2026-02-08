@@ -113,7 +113,7 @@ export default function Page() {
         {/* Footer */}
         <footer className="mt-8 border-t border-border pb-6 pt-4 text-center">
           <p className="text-xs text-muted-foreground">
-            Frictionless Quality Release System v1.0 &mdash; One-Scan Workflow
+            RBC Quality Control v1.0 &mdash; One-Scan Workflow
           </p>
         </footer>
       </main>

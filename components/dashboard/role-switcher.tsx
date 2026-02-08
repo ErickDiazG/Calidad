@@ -30,7 +30,7 @@ export function RoleSwitcher({ currentRole, onRoleChange }: RoleSwitcherProps) {
           </div>
           <div>
             <h1 className="text-lg font-bold leading-tight text-foreground">
-              Frictionless Quality Release
+              RBC Quality Control
             </h1>
             <p className="text-xs text-muted-foreground">One-Scan Inspection Workflow</p>
           </div>

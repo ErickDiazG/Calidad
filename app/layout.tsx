@@ -9,7 +9,7 @@ const _inter = Inter({ subsets: ['latin'] })
 const _jetbrainsMono = JetBrains_Mono({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Frictionless Quality Release System',
+  title: 'RBC Quality Control',
   description: 'One-Scan digital inspection workflow for manufacturing quality control',
 }
 
