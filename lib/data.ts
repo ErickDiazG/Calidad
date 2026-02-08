@@ -179,7 +179,7 @@ export const DEFECT_CODES: DefectCode[] = [
   { code: "Z44", description: "TEFLON NO ADHERIDO-ADHESION TEST FAILURE" },
   { code: "Z48", description: "BROCHA, BROCA, INSERTOS DAÑADOS" },
   { code: "Z49", description: "HEXAGONAL FUERA DE CENTRO" },
-  { code: "Z50", description: "SIN IDENTIFICACION  QUE PERMITA SU TRAZABILIDAD" },
+  { code: "Z50", description: "SIN IDENTIFICACION QUE PERMITA SU TRAZO" },
 ]
 
 export const INITIAL_SPECS: InspectionSpec[] = [
