@@ -44,6 +44,8 @@ interface InspectorViewProps {
   setLotReleased: (v: boolean) => void
   lotRejected: boolean
   setLotRejected: (v: boolean) => void
+  /** If true, inspection inputs are read-only (RBAC enforcement) */
+  isReadOnly?: boolean
 }
 
 export function InspectorView({
@@ -56,6 +58,7 @@ export function InspectorView({
   setLotReleased,
   lotRejected,
   setLotRejected,
+  isReadOnly = false,
 }: InspectorViewProps) {
   const [confirmDialog, setConfirmDialog] = useState<"approve" | "reject" | null>(null)
 
@@ -185,7 +188,7 @@ export function InspectorView({
                         step="0.01"
                         value={spec.actual ?? ""}
                         onChange={(e) => handleActualChange(spec.id, e.target.value)}
-                        disabled={lotReleased || lotRejected}
+                        disabled={lotReleased || lotRejected || isReadOnly}
                         placeholder="Enter..."
                         className={cn(
                           "h-10 w-24 ml-auto text-right font-mono border-border bg-muted/30 text-foreground placeholder:text-muted-foreground/50",
