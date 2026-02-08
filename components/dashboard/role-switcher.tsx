@@ -7,7 +7,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { HardHat, ClipboardCheck, BarChart3, Clock, LogOut, User } from "lucide-react"
+import { HardHat, ClipboardCheck, BarChart3, Clock, LogOut, User, Settings2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
 import { AuthModal } from "@/components/auth/AuthModal"
@@ -22,6 +22,7 @@ const ROLES: { id: Role; label: string; icon: React.ElementType; requiresAuth: b
   { id: "operator", label: "Operador", icon: HardHat, requiresAuth: false },
   { id: "inspector", label: "Inspector", icon: ClipboardCheck, requiresAuth: true },
   { id: "manager", label: "Manager", icon: BarChart3, requiresAuth: true },
+  { id: "admin_engineer", label: "Ingeniero", icon: Settings2, requiresAuth: true },
 ]
 
 interface RoleSwitcherProps {

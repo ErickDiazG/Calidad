@@ -1,7 +1,80 @@
 // ==========================================
 // TYPES
 // ==========================================
-export type Role = "operator" | "inspector" | "manager"
+export type Role = "operator" | "inspector" | "manager" | "admin_engineer"
+
+/**
+ * Field type for dynamic part configuration
+ */
+export type FieldType = "numeric" | "boolean" | "select"
+
+/**
+ * Field Definition for Dynamic Part Config
+ * Defines a measurement field that engineers can configure per part
+ */
+export interface FieldDefinition {
+  id: string
+  name: string                    // e.g., "Radius", "Length", "Visual Check"
+  type: FieldType
+  tool?: string                   // Measurement tool (Vernier, Caliper, etc.)
+  min?: number                    // For numeric validation
+  max?: number
+  options?: string[]              // For select type
+  required: boolean
+}
+
+/**
+ * Part Configuration with Versioning
+ * Master data for a part number with dynamic inspection fields
+ */
+export interface PartConfig {
+  id: string
+  partNumber: string
+  name: string
+  currentRevision: string         // e.g., "Rev B"
+  fields: FieldDefinition[]
+  blueprintUrl?: string
+  photoUrls?: string[]
+  createdAt: string
+  updatedAt: string
+}
+
+/**
+ * Part Revision for audit trail
+ * Tracks specification changes over time
+ */
+export interface PartRevision {
+  id: string
+  partConfigId: string
+  revision: string                // e.g., "Rev A", "Rev B"
+  fields: FieldDefinition[]
+  blueprintUrl?: string
+  changeNote: string
+  createdAt: string
+  createdBy: string
+}
+
+/**
+ * Partial Shipment tracking
+ * Records each partial shipment for an order
+ */
+export interface PartialShipment {
+  id: string
+  orderId: string
+  lotNumber: string
+  quantity: number
+  timestamp: string
+  inspectedBy: string
+}
+
+/**
+ * Dynamic inspection value for a single field
+ */
+export interface InspectionValue {
+  fieldId: string
+  value: number | boolean | string | null
+  status: "pending" | "pass" | "fail"
+}
 
 /**
  * Mock user credentials for authentication
@@ -16,6 +89,7 @@ export const MOCK_CREDENTIALS: UserCredential[] = [
   { pin: "1234", name: "Erick Díaz", role: "inspector" },
   { pin: "5678", name: "Carlos Mendez", role: "manager" },
   { pin: "0000", name: "Admin QC", role: "manager" },
+  { pin: "9999", name: "Ing. Sistema", role: "admin_engineer" },
 ]
 
 /**
@@ -137,3 +211,94 @@ export const MOCK_KPI: KpiData = {
     { code: "Z04", count: 2 },
   ],
 }
+
+// ==========================================
+// INITIAL PART CONFIGURATIONS (Demo Data)
+// ==========================================
+export const INITIAL_PART_CONFIGS: PartConfig[] = [
+  {
+    id: "part-001",
+    partNumber: "320-52761",
+    name: "Bushing Assembly",
+    currentRevision: "Rev A",
+    fields: [
+      { id: "f1", name: "Distancia", type: "numeric", tool: "Vernier", min: 0.47, max: 0.53, required: true },
+      { id: "f2", name: "Radio", type: "numeric", tool: "Vernier", min: 0.22, max: 0.28, required: true },
+      { id: "f3", name: "Diametro Hole", type: "numeric", tool: "Pin Gauge", min: 0.25, max: 0.31, required: true },
+      { id: "f4", name: "Angulo", type: "numeric", tool: "Protractor", min: 44.5, max: 45.5, required: true },
+    ],
+    createdAt: "2026-01-15T10:00:00Z",
+    updatedAt: "2026-01-15T10:00:00Z",
+  },
+  {
+    id: "part-002",
+    partNumber: "420-78932",
+    name: "Valve Cap",
+    currentRevision: "Rev B",
+    fields: [
+      { id: "f1", name: "Diámetro Exterior", type: "numeric", tool: "Calibrador", min: 12.5, max: 12.7, required: true },
+      { id: "f2", name: "Espesor", type: "numeric", tool: "Micrómetro", min: 2.0, max: 2.2, required: true },
+      { id: "f3", name: "Inspección Visual", type: "boolean", required: true },
+    ],
+    createdAt: "2026-01-20T14:30:00Z",
+    updatedAt: "2026-02-01T09:15:00Z",
+  },
+  {
+    id: "part-003",
+    partNumber: "550-33421",
+    name: "Shaft Connector",
+    currentRevision: "Rev A",
+    fields: [
+      { id: "f1", name: "Longitud Total", type: "numeric", tool: "Cinta Métrica", min: 150.0, max: 152.0, required: true },
+      { id: "f2", name: "Acabado Superficial", type: "select", options: ["Liso", "Texturizado", "Pulido"], required: true },
+    ],
+    createdAt: "2026-02-05T08:00:00Z",
+    updatedAt: "2026-02-05T08:00:00Z",
+  },
+]
+
+// ==========================================
+// INITIAL REVISIONS (Demo Data)
+// ==========================================
+export const INITIAL_REVISIONS: PartRevision[] = [
+  {
+    id: "rev-001",
+    partConfigId: "part-001",
+    revision: "Rev A",
+    fields: [
+      { id: "f1", name: "Distancia", type: "numeric", tool: "Vernier", min: 0.47, max: 0.53, required: true },
+      { id: "f2", name: "Radio", type: "numeric", tool: "Vernier", min: 0.22, max: 0.28, required: true },
+      { id: "f3", name: "Diametro Hole", type: "numeric", tool: "Pin Gauge", min: 0.25, max: 0.31, required: true },
+      { id: "f4", name: "Angulo", type: "numeric", tool: "Protractor", min: 44.5, max: 45.5, required: true },
+    ],
+    changeNote: "Initial release",
+    createdAt: "2026-01-15T10:00:00Z",
+    createdBy: "Ing. Sistema",
+  },
+  {
+    id: "rev-002",
+    partConfigId: "part-002",
+    revision: "Rev A",
+    fields: [
+      { id: "f1", name: "Diámetro Exterior", type: "numeric", tool: "Calibrador", min: 12.4, max: 12.6, required: true },
+      { id: "f2", name: "Espesor", type: "numeric", tool: "Micrómetro", min: 2.0, max: 2.2, required: true },
+    ],
+    changeNote: "Initial release",
+    createdAt: "2026-01-20T14:30:00Z",
+    createdBy: "Ing. Sistema",
+  },
+  {
+    id: "rev-003",
+    partConfigId: "part-002",
+    revision: "Rev B",
+    fields: [
+      { id: "f1", name: "Diámetro Exterior", type: "numeric", tool: "Calibrador", min: 12.5, max: 12.7, required: true },
+      { id: "f2", name: "Espesor", type: "numeric", tool: "Micrómetro", min: 2.0, max: 2.2, required: true },
+      { id: "f3", name: "Inspección Visual", type: "boolean", required: true },
+    ],
+    changeNote: "Increased OD tolerance, added visual inspection per ECO-2026-015",
+    createdAt: "2026-02-01T09:15:00Z",
+    createdBy: "Ing. Sistema",
+  },
+]
+

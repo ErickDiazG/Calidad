@@ -35,6 +35,29 @@ const ROLE_PERMISSIONS: Record<Role, string[]> = {
         "view_defect_trends",
         "download_reports",
     ],
+    admin_engineer: [
+        // Master Data Management
+        "manage_parts",
+        "create_part",
+        "edit_part",
+        "delete_part",
+        // Versioning & Revisions
+        "manage_revisions",
+        "create_revision",
+        "view_revision_history",
+        // Blueprint Management
+        "manage_blueprints",
+        "upload_blueprint",
+        "delete_blueprint",
+        // System Configuration
+        "configure_system",
+        "view_all_audit",
+        // Inherits inspection viewing
+        "view_lot_context",
+        "view_inspection_specs",
+        "view_kpis",
+        "view_audit_log",
+    ],
 }
 
 /**

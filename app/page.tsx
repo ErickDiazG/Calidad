@@ -12,11 +12,13 @@ import { LotContext } from "@/components/dashboard/lot-context"
 import { OperatorView } from "@/components/dashboard/operator-view"
 import { InspectorView } from "@/components/dashboard/inspector-view"
 import { ManagerView } from "@/components/dashboard/manager-view"
+import { EngineerView } from "@/components/dashboard/engineer-view"
 import { KioskView } from "@/components/kiosk/KioskView"
 import { SessionProvider, useSession } from "@/context/SessionContext"
+import { PartConfigProvider } from "@/context/PartConfigContext"
 import { INITIAL_SPECS, type Role, type InspectionSpec } from "@/lib/data"
 import { Badge } from "@/components/ui/badge"
-import { HardHat, ClipboardCheck, BarChart3 } from "lucide-react"
+import { HardHat, ClipboardCheck, BarChart3, Settings2 } from "lucide-react"
 import { toast } from "sonner"
 
 /** Role configuration with labels, icons, and descriptions */
@@ -35,6 +37,11 @@ const roleConfig: Record<Role, { label: string; icon: React.ElementType; descrip
     label: "Plant Manager",
     icon: BarChart3,
     description: "Monitor KPIs, defect trends, and review the audit trail.",
+  },
+  admin_engineer: {
+    label: "Engineering Manager",
+    icon: Settings2,
+    description: "Configure part models, manage revisions, and define inspection fields.",
   },
 }
 
@@ -192,6 +199,8 @@ function DashboardContent() {
             )}
 
             {currentRole === "manager" && <ManagerView />}
+
+            {currentRole === "admin_engineer" && <EngineerView />}
           </div>
         )}
       </main>
@@ -222,7 +231,9 @@ function DashboardContent() {
 export default function Page() {
   return (
     <SessionProvider>
-      <DashboardContent />
+      <PartConfigProvider>
+        <DashboardContent />
+      </PartConfigProvider>
     </SessionProvider>
   )
 }

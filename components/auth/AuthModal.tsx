@@ -35,6 +35,7 @@ const ROLE_CONFIG: Record<Role, { label: string; color: string }> = {
     operator: { label: "Production Operator", color: "text-blue-400" },
     inspector: { label: "Quality Inspector", color: "text-amber-400" },
     manager: { label: "Plant Manager", color: "text-purple-400" },
+    admin_engineer: { label: "Engineering Manager", color: "text-cyan-400" },
 }
 
 /**
@@ -195,7 +196,7 @@ export function AuthModal({ isOpen, onClose, targetRole, onSuccess }: AuthModalP
                 {/* Demo Hint */}
                 <div className="border-t border-border pt-4">
                     <p className="text-center text-xs text-muted-foreground">
-                        Demo PINs: Inspector <code className="px-1 bg-muted rounded">1234</code> | Manager <code className="px-1 bg-muted rounded">5678</code>
+                        Demo PINs: Inspector <code className="px-1 bg-muted rounded">1234</code> | Manager <code className="px-1 bg-muted rounded">5678</code> | Ingeniero <code className="px-1 bg-muted rounded">9999</code>
                     </p>
                 </div>
             </DialogContent>
