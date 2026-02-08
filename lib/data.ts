@@ -3,6 +3,26 @@
 // ==========================================
 export type Role = "operator" | "inspector" | "manager"
 
+/**
+ * Mock user credentials for authentication
+ */
+export interface UserCredential {
+  pin: string
+  name: string
+  role: Role
+}
+
+export const MOCK_CREDENTIALS: UserCredential[] = [
+  { pin: "1234", name: "Erick Díaz", role: "inspector" },
+  { pin: "5678", name: "Carlos Mendez", role: "manager" },
+  { pin: "0000", name: "Admin QC", role: "manager" },
+]
+
+/**
+ * Valid lot number patterns for validation
+ */
+export const VALID_LOT_PREFIXES = ["STD", "LOT", "RBC", "QC"]
+
 export interface LotInfo {
   partNumber: string
   orderNumber: string
