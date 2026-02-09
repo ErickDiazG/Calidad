@@ -1,9 +1,11 @@
 "use client"
 
-import { QrCode, FileText, ImageIcon, Package, Hash, ClipboardList, Layers, Ruler } from "lucide-react"
+import { QrCode, FileText, ImageIcon, Package, Hash, ClipboardList, Layers, Ruler, Expand } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import type { LotInfo } from "@/lib/data"
+import Image from "next/image"
 
 interface LotContextProps {
   lot: LotInfo
@@ -31,7 +33,8 @@ export function LotContext({ lot }: LotContextProps) {
         <CardContent className="space-y-3">
           {infoItems.map((item) => {
             const Icon = item.icon
-            const value = lot[item.key]
+            const value = lot[item.key as keyof LotInfo]
+
             return (
               <div key={item.key} className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -59,13 +62,47 @@ export function LotContext({ lot }: LotContextProps) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex aspect-[4/3] flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted/30">
-            <FileText className="mb-2 h-10 w-10 text-muted-foreground/50" />
-            <span className="text-xs font-medium text-muted-foreground">
-              Drawing: 320-52761-REV-C.pdf
-            </span>
-            <span className="mt-1 text-[10px] text-muted-foreground/70">
-              Tap to view full document
+          <Dialog>
+            <DialogTrigger asChild>
+              <div className="relative flex aspect-[4/3] cursor-zoom-in flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted/30 hover:bg-muted/50 transition-colors overflow-hidden group">
+                {lot.drawingUrl ? (
+                  <>
+                    <Image
+                      src={lot.drawingUrl}
+                      alt="Technical Drawing"
+                      fill
+                      className="object-contain p-2"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Expand className="h-8 w-8 text-white" />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <FileText className="mb-2 h-10 w-10 text-muted-foreground/50" />
+                    <span className="text-xs font-medium text-muted-foreground">
+                      No Drawing Available
+                    </span>
+                  </>
+                )}
+              </div>
+            </DialogTrigger>
+            {lot.drawingUrl && (
+              <DialogContent className="max-w-5xl h-[90vh] p-0 overflow-hidden bg-background">
+                <div className="relative h-full w-full">
+                  <Image
+                    src={lot.drawingUrl}
+                    alt="Technical Drawing Full Screen"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </DialogContent>
+            )}
+          </Dialog>
+          <div className="mt-2 text-center">
+            <span className="text-[10px] text-muted-foreground/70">
+              Drawing: {lot.partNumber}-REV-{lot.standard.split(' ')[2] || 'D'}.jpg
             </span>
           </div>
         </CardContent>
@@ -80,13 +117,26 @@ export function LotContext({ lot }: LotContextProps) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex aspect-[4/3] flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted/30">
-            <ImageIcon className="mb-2 h-10 w-10 text-muted-foreground/50" />
-            <span className="text-xs font-medium text-muted-foreground">
-              Part: 320-52761
-            </span>
-            <span className="mt-1 text-[10px] text-muted-foreground/70">
-              Reference image of finished part
+          <div className="relative flex aspect-[4/3] flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted/30 overflow-hidden">
+            {lot.photoUrl ? (
+              <Image
+                src={lot.photoUrl}
+                alt="Reference Part"
+                fill
+                className="object-cover"
+              />
+            ) : (
+              <>
+                <ImageIcon className="mb-2 h-10 w-10 text-muted-foreground/50" />
+                <span className="text-xs font-medium text-muted-foreground">
+                  No Photo Available
+                </span>
+              </>
+            )}
+          </div>
+          <div className="mt-2 text-center">
+            <span className="text-[10px] text-muted-foreground/70">
+              Part: {lot.partNumber} (Visual Reference)
             </span>
           </div>
         </CardContent>
