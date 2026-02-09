@@ -103,6 +103,8 @@ export interface LotInfo {
   lotHeatNumber: string
   qtyRequired: number
   standard: string
+  drawingUrl?: string
+  photoUrl?: string
 }
 
 export interface DefectCode {
@@ -144,6 +146,8 @@ export const SCANNED_LOT: LotInfo = {
   lotHeatNumber: "296039",
   qtyRequired: 3300,
   standard: "ASTM A 967-05",
+  drawingUrl: "/images/tecnical drawing.jpg",
+  photoUrl: "/images/reference photo.jpg",
 }
 
 export const DEFECT_CODES: DefectCode[] = [
