@@ -1,0 +1,1 @@
+Sistema de calidad para mejorar el flujo de trabajo, actualmente se hace todo manual, entonces la meta es que toda la papeleria que llenan manual y luego lo suben manual a excel, luego lo transforman a pdf, que se haga con un solo sistema, que solo escaneando el lote, y se llene en automatico esa papeleria.
